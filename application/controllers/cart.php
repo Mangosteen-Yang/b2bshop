@@ -44,10 +44,10 @@ class Cart extends Home_Controller{
 		}
 	}
 	#删除购物车信息
-	public function delete($rowid){
+	public function delete(){
+		$rowid = $this->input->post('rowid');
 		$data['rowid'] = $rowid;
 		$data['qty'] = 0;
 		$this->cart->update($data);
-		redirect('cart/show');
 	}
 }

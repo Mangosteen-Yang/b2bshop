@@ -32,12 +32,6 @@
     <script type="text/javascript" src="<?php echo base_url('themes/default/js/scripts.js');?>"></script>
     <script type="text/javascript" src="<?php echo base_url('themes/default/js/messenger.min.js');?>"></script>
     <script type="text/javascript" src="<?php echo base_url('themes/default/js/messenger-theme-flat.js');?>"></script>
-    function check_all(obj,cName)
-    {
-        var checkboxs = document.getElementsByName(cName);
-        for(var i=0;i<checkboxs.length;i++){checkboxs[i].checked = obj.checked;}
-    }
-    </script>
 </head>
 
 <body>
@@ -129,21 +123,22 @@
                         <?php foreach ($carts as $v) :?>
                             <tr>
                                 <td>
-                                    <input type="checkbox" name="info"><?php echo $v['name'];?>
+                                    <span name="info"><?php echo $v['name'];?></span>
                                 </td>
                                 <td>
                                    <span class = "price"><?php echo $v['price'];?></span> 
                                 </td>
                                 <td>
                                     <button type="button" class="btn btn-default subtract">-</button>
-                                    <input type="text" class="form-control" style="width:50px" value="1">
+                                    <input type="text" name="data[]" class="form-control" style="width:50px" value="<?php echo $v['qty'];?>"></input>
+                                    <input type="hide" value="?php echo $v['rowid'];?>"></input>
                                     <button type="button" class="btn btn-default plus">+</button>
                                 </td>
                                 <td>
                                     <span class = "subtotal" ><?php echo $v['subtotal'];?></span>
                                 </td>
                                 <td>
-                                    <button type="button" class="btn btn-danger">删除</button>
+                                    <button type="button" class="btn btn-danger delete" rowid="<?php echo $v['rowid'];?>">删除</button>
                                 </td>
                             </tr>
                         <?php endforeach;?>
@@ -151,9 +146,7 @@
                 </table>
                 </form>
                 <blockquote>
-                    <input type="checkbox" name="all" onclick="check_all(this,'info')" />全选/全不选&nbsp;&nbsp;&nbsp;
-                    <a href="#">删除选中</a>
-                    <p class="right">商品总价（￥5.54）+ 运费（￥2.00） = 商品金额总计（￥7.54）</p>
+                    <p class="right">商品总价（￥5.54）+ 运费（￥2.00） = 商品金额总计（￥<span id="total">7.54</span>）</p>
                 </blockquote>
                 <button type="button" class="btn btn-warning">继续购物</button> 
                 <button type="button" class="btn btn-success floatright">去结算</button>
@@ -363,11 +356,13 @@
             </div>
     </div>
     <script type="text/javascript">
+            total();
             $(".plus").click(function(){
                 $(this).prev().val(parseInt($(this).prev().val())+1);
                 var qty = $(this).prev().val();
                 var price = $(this).parent().parent().find("span.price").html();
                 $(this).parent().next().find("span.subtotal").html(qty*price);
+                total();
             })
             $(".subtract").click(function(){
                 if($(this).next().val()>1){
@@ -375,7 +370,29 @@
                     var qty = $(this).next().val();
                     var price = $(this).parent().parent().find("span.price").html();
                     $(this).parent().next().find("span.subtotal").html(qty*price);
+                    total();
                 }
+            })
+
+            function total(){
+                var sum = 0;
+                $(".subtotal").each(function(i){
+                    sum = sum + parseInt($(this).text());
+                    $("#total").html(sum);
+                })
+            }
+
+            $(".delete").click(function(){
+                var rowid = $(this).attr('rowid');
+                $.ajax({
+                    url: "delete",
+                    method: "post",   
+                    data:{
+                        'rowid': rowid,
+                    },
+                });
+                $(this).parent().parent().remove();
+                total();
             })
     </script>
 </body>
