@@ -26,6 +26,7 @@ class Goods extends Home_Controller{
 		// echo '<pre>';
 		// var_dump($data);
 		$this->load->view('detail.html',$data);
+		var_dump($data);
 		
 	}
 }

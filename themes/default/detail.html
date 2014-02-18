@@ -12,8 +12,8 @@
     <!--script src="js/less-1.3.3.min.js"></script-->
     <!--append ‘#!watch’ to the browser URL, then refresh the page. -->
     
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/index.css" rel="stylesheet">
+   <link href="<?php echo base_url('themes/default/css/bootstrap.min.css');?>" rel="stylesheet">
+    <link href="<?php echo base_url('themes/default/css/index.css');?>" rel="stylesheet">
 
   <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
   <!--[if lt IE 9]>
@@ -27,9 +27,11 @@
   <link rel="apple-touch-icon-precomposed" href="img/apple-touch-icon-57-precomposed.png">
   <link rel="shortcut icon" href="img/favicon.png">
   
-    <script type="text/javascript" src="js/jquery.min.js"></script>
-    <script type="text/javascript" src="js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="js/scripts.js"></script>
+    <script type="text/javascript" src="<?php echo base_url('themes/default/js/jquery.min.js');?>"></script>
+    <script type="text/javascript" src="<?php echo base_url('themes/default/js/bootstrap.min.js');?>"></script>
+    <script type="text/javascript" src="<?php echo base_url('themes/default/js/scripts.js');?>"></script>
+    <script type="text/javascript" src="<?php echo base_url('themes/default/js/messenger.min.js');?>"></script>
+    <script type="text/javascript" src="<?php echo base_url('themes/default/js/messenger-theme-flat.js');?>"></script>
 </head>
 
 <body>
@@ -87,16 +89,27 @@
                     <div class="col-md-9 column">
                         <div class="row clearfix">
                             <div class="col-md-6 column">
-                                <img alt="380x380" src="http://lorempixel.com/380/380/" />
+                            <?php foreach ($goods_pic as $v){
+                                if ($v['pic_usage']==0){
+                                    $img = $v['pic_name'];
+                                    break;
+                                }
+                            } 
+                            ?>
+                                <img alt="380x380" src='<?php echo base_url("/public/uploads/$img") ?>' style="height:320px;"/>
                             </div>
                             <div class="col-md-6 column detail_summary">
-                                 <h3>达达熊黄金燕麦巧克力</h3>
-                                 <cite>低糖份营养均衡</cite>
-                                 <h4>价  格： 0.39 元</h4>
-                                 购买个数：<button type="button" class="btn btn-default">-</button>
-                                <input type="text" class="form-control" style="width:50px;display:inline;">
-                                <button type="button" class="btn btn-default">+</button>件（库存520件）
-                                <button type="button" class="btn btn-block btn-success">Default</button>
+                                 <h3><?php echo $goods['goods_name']?></h3>
+                                     <form action="../../cart/add" method="POST">
+                                     <input type="hidden" name="goods_id" value="<?php echo $goods['goods_id']?>"></input>
+                                     <h4>价  格： <span name="shop_price"><?php echo $goods['shop_price'];?> </span>元</h4>
+                                     购买个数：<button type="button" class="btn btn-default subtract">-</button>
+                                    <input type="text" name="goods_nums" lass="form-control" style="width:50px;display:inline;" value="1">
+                                    <button type="button" class="btn btn-default plus">+</button>件（库存<?php echo $goods['goods_number'] ?>件）
+                                    <input type="hidden" name= "goods_name" value="<?php echo $goods['goods_name']?>">
+                                    <input type="hidden" name= "shop_price" value="<?php echo $goods['shop_price'];?>">
+                                    <button type="submit" class="btn btn-block btn-success add_to_cart">提交</button>
+                                </form>
                             </div>
                         </div>
                         <div class="tabbable" id="tabs-239964">
@@ -111,38 +124,39 @@
                             <div class="tab-content">
                                 <div class="tab-pane active" id="panel-2922">
                                     <p>
-                                        I'm in Section 1.
+                                        <?php echo $goods['goods_brief'];?>
                                     </p>
                                 </div>
                                 <div class="tab-pane" id="panel-322279">
-                                    <p>
-                                        Howdy, I'm in Section 2.
-                                    </p>
+                                    
+                                    <table class="table table-hover">
+                                            <?php foreach ($comments as $v) :?>
+                                                <tr>
+                                                    <td>
+                                                        <span name="comments_name"><?php echo $v['comments_name'];?></span>
+                                                    </td>
+                                                    <td>
+                                                       <span class = "comment"><?php echo $v['comment'];?></span> 
+                                                    </td>
+                                                    <td>
+                                                        <span class = "date" ><?php echo $v['date'];?></span>
+                                                    </td>
+                                                </tr>
+                                            <?php endforeach;?>
+                                    </table>
+                                    
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-3 column">
                         <div class="list-group">
-                            <a href="#" class="list-group-item active">Home</a>
-                            <div class="list-group-item">
-                                List header
-                            </div>
-                            <div class="list-group-item">
-                                List header
-                            </div>
-                            <div class="list-group-item">
-                                List header
-                            </div>
-                            <div class="list-group-item">
-                                List header
-                            </div>
-                            <div class="list-group-item">
-                                List header
-                            </div>
-                            <div class="list-group-item">
-                                List header
-                            </div>
+                            <a href="#" class="list-group-item active">热销榜</a>
+                            <?php foreach ($best as $v):?>
+                                <a class="list-group-item" href="<?php echo $v['goods_id']?>">
+                                    <?php echo $v['goods_name'];?>
+                                </a>
+                            <?php endforeach;?>
                         </div>
                     </div>
                 </div>
@@ -349,6 +363,42 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+            </div>
 
 </div>
+<script type="text/javascript">
+    $(".plus").click(function(){
+            $(this).prev().val(parseInt($(this).prev().val())+1);
+        })
+        $(".subtract").click(function(){
+            if($(this).next().val()>1){
+                $(this).next().val(parseInt($(this).next().val())-1);
+            }
+        })
+
+    // $('.add_to_cart').click(function(){
+    //         var form= $(this).parent();
+    //         var goods_name= form.find("h3").html();
+    //         var goods_id= form.find("input[name= 'goods_id']").attr('value');
+    //         var shop_price= form.find("span[name= 'shop_price']").html();
+    //         var goods_nums= form.find("input[name= 'goods_nums']").attr('value');
+    //         $.ajax({
+    //             url: "<?php echo site_url('cart/add') ?>",
+    //             method: "post",   
+    //             data:{
+    //                 'goods_name': goods_name,
+    //                 'goods_id': goods_id,
+    //                 'shop_price':shop_price,
+    //                 'goods_nums':goods_nums,
+    //             },
+    //             success: function(data) {
+    //                 console.log('success');
+    //             },
+    //             error: function(request) {
+    //                 console.log('error');
+    //             }
+    //         });
+    // });
+</script>
+</body>
+</html>

@@ -14,7 +14,7 @@
 | path to your installation.
 |
 */
-$config['base_url']	= 'http://localhost/b2bshop/';
+$config['base_url']	= 'http://127.0.0.1/b2bshop/';
 
 /*
 |--------------------------------------------------------------------------

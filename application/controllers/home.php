@@ -15,7 +15,13 @@ class Home extends Home_Controller{
 		#获取购物车数量数据
 		$data['carts'] = $this->cart->total_items();
 		#获取商品数据
-		$data['goods'] = $this->goods_model->get_allGoods($cat_id);
+		#获取商品数据
+		$goods = $this->goods_model->get_allGoods($cat_id);
+		foreach ($goods as $k => $v) {
+			$goods[$k]['pic'] = $this->goods_model->get_picId($v['goods_id']);
+		}
+		$data['goods']= $goods;
+		var_dump($data['goods']);
 		$this->load->view('index.html', $data);
 	}
 
@@ -24,7 +30,6 @@ class Home extends Home_Controller{
 		$goods_name = $this->input->post('search');
 		$data['cart'] = $this->cart->total_items();
 		$data['goods'] = $this->goods_model->search($goods_name);
-		var_dump($data['goods']);
 		$this->load->view('index.html', $data);
 	}
 

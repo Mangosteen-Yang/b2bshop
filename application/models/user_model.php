@@ -14,7 +14,7 @@ class User_model extends CI_Model{
 	#登录验证
 	public function login_user($username,$password){
 		$condition['user_name'] = $username;
-		$condition['password'] = md5($password);
+		$condition['password'] = $password;
 		$query = $this->db->where($condition)->get(self::TBL_USER);
 		return $query->row_array();
 	}

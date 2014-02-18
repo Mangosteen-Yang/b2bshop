@@ -24,13 +24,13 @@ class User extends Home_Controller{
 		$this->form_validation->set_rules('password','密码','required|min_length[6]|max_length[16]|md5');
 		$this->form_validation->set_rules('repassword','重复密码','required|matches[password]');
 		$this->form_validation->set_rules('email','电子邮箱','required|valid_email');
-
+		
 		if ($this->form_validation->run() == false) {
 			# 未通过
 			echo validation_errors();
 		} else {
 			# 通过,注册
-			$data['user_name'] = $this->input->post('username',true);
+			// $data['user_name'] = $this->input->post('username',true);
 			$data['password'] = $this->input->post('password',true);
 			$data['email'] = $this->input->post('email',true);
 			$data['reg_time'] = time();
@@ -51,8 +51,10 @@ class User extends Home_Controller{
 	#登录动作
 	public function signin(){
 		#验证 省略
-		$username = $this->input->post('username');
+		$username = $this->input->post('email');
 		$password = $this->input->post('password');
+		echo $username;
+		echo $password;
 
 		if ($user = $this->user_model->login_user($username,$password)) {
 			#成功，将用户信息保存至session

@@ -51,3 +51,7 @@ blockquote{
     margin-top: 60px;
     width:50%;
 }
+#qty{
+    color: rgb(223, 61, 61);
+    font-size: 18px;
+}

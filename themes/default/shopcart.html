@@ -98,7 +98,7 @@
                         </div>
                     </div>
                 </div>
-                <form class="form-inline" role="form">
+                <form action="./update" class="form-inline" role="form" method="POST">
                 <table class="table table-bordered">
                     <thead>
                         <tr>
@@ -121,6 +121,7 @@
                     </thead>
                     <tbody id="tbody">
                         <?php foreach ($carts as $v) :?>
+                            <input type="hidden" name="rowid[]" value="<?php echo $v['rowid'];?>"></input>
                             <tr>
                                 <td>
                                     <span name="info"><?php echo $v['name'];?></span>
@@ -130,8 +131,7 @@
                                 </td>
                                 <td>
                                     <button type="button" class="btn btn-default subtract">-</button>
-                                    <input type="text" name="data[]" class="form-control" style="width:50px" value="<?php echo $v['qty'];?>"></input>
-                                    <input type="hide" value="?php echo $v['rowid'];?>"></input>
+                                    <input type="text" name="qty[]" class="form-control" style="width:50px" value="<?php echo $v['qty'];?>"></input>
                                     <button type="button" class="btn btn-default plus">+</button>
                                 </td>
                                 <td>
@@ -144,12 +144,13 @@
                         <?php endforeach;?>
                     </tbody>
                 </table>
-                </form>
                 <blockquote>
-                    <p class="right">商品总价（￥5.54）+ 运费（￥2.00） = 商品金额总计（￥<span id="total">7.54</span>）</p>
+                    <p class="right">商品金额总计（￥<span id="total">0.00</span>）</p>
                 </blockquote>
                 <button type="button" class="btn btn-warning">继续购物</button> 
-                <button type="button" class="btn btn-success floatright">去结算</button>
+                <button type="submit" class="btn btn-success floatright">去结算</button>
+                </form>
+                
             </div>
         </div>
             <div class="row clearfix footer">
