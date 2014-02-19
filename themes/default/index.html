@@ -163,7 +163,8 @@
 		<?php foreach ($goods as $v) :?>
 <!-- 			<div class="row clearfix">
  -->			<div class="col-md-3 column">
-					<img alt="263x263" src="<?php echo base_url('themes/default/img/2.jpg');?>" class="img-thumbnail">
+ 					<?php $img= $v['pic'][0]['pic_name'];?>
+					<a href="index.php/goods/index/<?php echo $v['goods_id']; ?>"><img alt="263x263" href="#" src='<?php echo base_url("/public/uploads/$img");?>' class="img-thumbnail" style="height:263px;width:263px;"></a>
 					<form method='post' id="<?php  echo $v['goods_id'];?>"> 
 					<ul class="list-unstyled">
 							<li><?php  echo $v['goods_name'];?></li>

@@ -21,7 +21,6 @@ class Home extends Home_Controller{
 			$goods[$k]['pic'] = $this->goods_model->get_picId($v['goods_id']);
 		}
 		$data['goods']= $goods;
-		var_dump($data['goods']);
 		$this->load->view('index.html', $data);
 	}
 
